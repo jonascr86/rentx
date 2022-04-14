@@ -5,6 +5,7 @@ import {
     Header,
     TotalCars,
     HeaderContent,
+    CarList,
 } from './styles'
 
 import Logo from '../../assets/logo.svg'
@@ -12,7 +13,7 @@ import { RFValue } from 'react-native-responsive-fontsize'
 import { Car } from '../../components/Car'
 
 export function Home(){
-    const CarDataOne = {
+    const CarData = {
         brand: 'Audi',
         name: 'RS 5 Coupé',
         rent:{
@@ -20,15 +21,6 @@ export function Home(){
             price: 120,
         },
         thumbnail: 'https://w7.pngwing.com/pngs/853/38/png-transparent-2017-audi-r8-car-audi-rs5-audi-r8-lms-2016-audi-sedan-car-performance-car.png',
-    }
-    const CarDataTwo = {
-        brand: 'porche',
-        name: 'Panamera',
-        rent:{
-            period: 'ao dia',
-            price: 350,
-        },
-        thumbnail: 'https://img1.gratispng.com/20180704/yoz/kisspng-2014-bmw-3-series-bmw-328-bmw-7-series-car-porsche-panamera-5b3d5a4fa36463.0701901515307474716693.jpg',
     }
     return(
         <Container>
@@ -48,12 +40,12 @@ export function Home(){
                     </TotalCars>
                 </HeaderContent>
             </Header>
-            <Car 
-               data={CarDataOne}
+            <CarList 
+                data={[1,2,3,4,5,6]}
+                keyExtractor={item => String(item)}
+                renderItem={({item}) => <Car data={CarData}/>}
             />
-            <Car 
-               data={CarDataTwo}
-            />
+            
         </Container>
     )
 }
