@@ -1,3 +1,4 @@
+import { getStatusBarHeight } from "react-native-iphone-x-helper";
 import styled from "styled-components/native";
 
 export const Container = styled.View`
@@ -9,5 +10,13 @@ export const Header = styled.View`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin: 10px;
+
+    position: absolute;
+
+    margin-top: ${getStatusBarHeight() + 18}px;
+    margin-left: 24px;
+`;
+
+export const CarImages = styled.View`
+    margin-top: ${getStatusBarHeight() + 32}px;;
 `;
