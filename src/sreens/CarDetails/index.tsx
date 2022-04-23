@@ -15,6 +15,7 @@ import {
         Price,
         About,
         Acessories,
+        Footer,
     } from "./styles";  
 import { StatusBar } from "react-native"; 
 import { ImageSlider } from "../../components/ImageSlider";
@@ -26,6 +27,7 @@ import ForceSvg from '../../assets/force.svg'
 import GasolineSvg from '../../assets/gasoline.svg'
 import ExchangeSvg from '../../assets/exchange.svg'
 import PeopleSvg from '../../assets/people.svg'
+import { Button } from "../../components/Button";
 
 export function CarDetails(){
     return(
@@ -69,6 +71,9 @@ export function CarDetails(){
                     de Sevilla. É um belíssimo carro para quem gosta de acelerar.
                 </About>
             </Content>
+            <Footer>
+                <Button title={"Confirmar"}/>
+            </Footer>
         </Container>
     )
 }
