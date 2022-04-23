@@ -16,6 +16,7 @@ import {
 import { BackButton } from '../../components/BackButton'
 import { Button } from '../../components/Button'
 import ArrowSvg from '../../assets/arrow.svg'
+import { Calendar } from '../../components/Calendar'
 
 export function Scheduling(){
     const theme = useTheme();
@@ -51,7 +52,7 @@ export function Scheduling(){
                 </RentalPeriod>
             </Header>
             <Content>
-
+                <Calendar />
             </Content>
 
             <Footer>
