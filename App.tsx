@@ -12,9 +12,8 @@ import {
   Inter_600SemiBold,
 } from '@expo-google-fonts/inter'
 
-import { Home } from './src/sreens/Home';
 import theme from './src/styles/theme';
-import { CarDetails } from './src/sreens/CarDetails';
+import { Scheduling } from './src/sreens/Scheduling';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -31,7 +30,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <CarDetails/>
+      <Scheduling/>
     </ThemeProvider>
   )
 }
