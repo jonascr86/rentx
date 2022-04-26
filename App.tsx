@@ -13,7 +13,7 @@ import {
 } from '@expo-google-fonts/inter'
 
 import theme from './src/styles/theme';
-import { Scheduling } from './src/sreens/Scheduling';
+import { SchedulingDetails } from './src/sreens/SchedulingDetails';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -30,7 +30,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Scheduling/>
+      <SchedulingDetails />
     </ThemeProvider>
   )
 }
