@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {Alert, StatusBar} from 'react-native'
 import {
     Container,
@@ -12,8 +12,13 @@ import Logo from '../../assets/logo.svg'
 import { RFValue } from 'react-native-responsive-fontsize'
 import { Car } from '../../components/Car'
 import { useNavigation } from '@react-navigation/native'
+import api from '../../services/api';
+import { CarDTO } from '../../dtos/CarDTO'
+import { Loading } from '../../components/Loading'
 
 export function Home(){
+    const [cars, setCars] = useState<CarDTO[]>([]);
+    const [loading, setLoading] = useState(true);
     const CarData = {
         brand: 'Audi',
         name: 'RS 5 Coupé',
@@ -25,8 +30,24 @@ export function Home(){
     }
     const navigation = useNavigation();
     function handlerShowCarDetail(){
-        navigation.navigate('CarDetails');
+        navigation.navigate({key: 'CarDetails'});
     }
+
+    useEffect(() => {
+        async function fetchCars(){
+            try {
+                const response = await api.get('/cars');
+                setCars(response.data);
+            } catch (error) {
+                console.log(error)
+            }finally{
+                setLoading(false)
+            }
+        }
+
+        fetchCars()
+
+    }, [])
     return(
         <Container>
             <StatusBar
@@ -45,15 +66,17 @@ export function Home(){
                     </TotalCars>
                 </HeaderContent>
             </Header>
-            <CarList 
-                data={[1,2,3,4,5,6]}
-                keyExtractor={item => String(item)}
-                renderItem={({item}) => 
+            {loading ? <Loading /> :
+                <CarList 
+                    data={cars}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({item}) => 
                     <Car 
-                        data={CarData}
+                        data={item}
                         onPress={handlerShowCarDetail}
                     />}
-            />
+                />
+            }
             
         </Container>
     )
