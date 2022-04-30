@@ -17,9 +17,19 @@ import { BackButton } from '../../components/BackButton'
 import { Button } from '../../components/Button'
 import ArrowSvg from '../../assets/arrow.svg'
 import { Calendar } from '../../components/Calendar'
+import { useNavigation } from '@react-navigation/native'
 
 export function Scheduling(){
     const theme = useTheme();
+    const navigation = useNavigation();
+
+    function handlerShowSchedulingDetails(){
+        navigation.navigate('SchedulingDetails');
+    }
+
+    function handlerGoBack(){
+        navigation.goBack();
+    }
     return(
         <Container>
             <StatusBar
@@ -29,7 +39,7 @@ export function Scheduling(){
             />
             <Header>
                 <BackButton 
-                    onPress={() => {}}
+                    onPress={handlerGoBack}
                     color={theme.colors.shape}
                 />
                 <Title>
@@ -56,7 +66,7 @@ export function Scheduling(){
             </Content>
 
             <Footer>
-                <Button title='Confirmar'/>
+                <Button title='Confirmar' onPress={handlerShowSchedulingDetails}/>
             </Footer>
         </Container>
     )

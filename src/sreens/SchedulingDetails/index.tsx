@@ -40,9 +40,19 @@ import PeopleSvg from '../../assets/people.svg'
 import { Button } from "../../components/Button";
 import { RFValue } from "react-native-responsive-fontsize";
 import { useTheme } from "styled-components";
+import { useNavigation } from "@react-navigation/native";
 
 export function SchedulingDetails(){
     const theme = useTheme();
+    const navigation = useNavigation();
+
+    function handlerShowSchedulingComplete(){
+        navigation.navigate('SchedulingComplete');
+    }
+
+    function handlerGoBack(){
+        navigation.goBack();
+    }
     return(
         <Container>
             <StatusBar
@@ -50,7 +60,7 @@ export function SchedulingDetails(){
             />
             <Header>
                 <BackButton 
-                    onPress={() => {}}
+                    onPress={handlerGoBack}
                 />
             </Header>
             <CarImages>
@@ -112,7 +122,11 @@ export function SchedulingDetails(){
                 </RentalPrice>
             </Content>
             <Footer>
-                <Button title={"Confirmar"}/>
+                <Button 
+                    title={"Alugar agora"} 
+                    color={theme.colors.success}
+                    onPress={handlerShowSchedulingComplete}
+                />
             </Footer>
         </Container>
     )

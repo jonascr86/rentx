@@ -28,8 +28,18 @@ import GasolineSvg from '../../assets/gasoline.svg'
 import ExchangeSvg from '../../assets/exchange.svg'
 import PeopleSvg from '../../assets/people.svg'
 import { Button } from "../../components/Button";
+import { useNavigation } from "@react-navigation/native";
 
 export function CarDetails(){
+    const navigation = useNavigation();
+
+    function handlerShowScheduling(){
+        navigation.navigate('Scheduling');
+    }
+
+    function handlerGoBack(){
+        navigation.goBack();
+    }
     return(
         <Container>
             <StatusBar
@@ -37,7 +47,7 @@ export function CarDetails(){
             />
             <Header>
                 <BackButton 
-                    onPress={() => {}}
+                    onPress={handlerGoBack}
                 />
             </Header>
             <CarImages>
@@ -72,7 +82,7 @@ export function CarDetails(){
                 </About>
             </Content>
             <Footer>
-                <Button title={"Confirmar"}/>
+                <Button title={"Escolher período do aluguel"} onPress={handlerShowScheduling} />
             </Footer>
         </Container>
     )

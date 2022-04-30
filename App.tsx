@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavigationContainer } from '@react-navigation/native'
 import AppLoading from 'expo-app-loading';
 import { ThemeProvider } from 'styled-components'
 import {
@@ -12,8 +13,8 @@ import {
   Inter_600SemiBold,
 } from '@expo-google-fonts/inter'
 
+import { StackRoute } from './src/routes/stack.routes';
 import theme from './src/styles/theme';
-import { SchedulingComplete } from './src/sreens/SchedulingComplete';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -30,7 +31,9 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <SchedulingComplete />
+      <NavigationContainer>
+        <StackRoute/>
+      </NavigationContainer>
     </ThemeProvider>
   )
 }
