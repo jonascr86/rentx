@@ -4,14 +4,38 @@ import { Feather } from '@expo/vector-icons'
 import { 
         Calendar as CustonCalendar, 
         LocaleConfig,
+        CalendarProps,
 } from 'react-native-calendars';
 import { useTheme } from 'styled-components';
 import { ptBR } from './localeConfig';
+import { generateInterval } from './generateInterval'
 
 LocaleConfig.locales['pt-br'] = ptBR;
 LocaleConfig.defaultLocale = 'pt-br';
 
-export function Calendar(){
+interface MakedDateProps{
+    [date: string]: {
+        color: string;
+        textColor: string;
+        disabled?: boolean;
+        disabletouchEvent?: boolean;
+    }
+}
+
+interface CalendarUserProps{
+    markedDates: MakedDateProps;
+    onDayPress: CalendarProps
+}
+
+interface DayProps{
+    dateString: string;
+    day: number;
+    month: number;
+    year: number;
+    timestamp: number;
+}
+
+function Calendar({markedDates, onDayPress}: CalendarUserProps){
     const theme = useTheme();
     return(
         <CustonCalendar
@@ -46,6 +70,15 @@ export function Calendar(){
             firstDay={1}
             minDate={String(new Date())}
             markingType="period"
+            markedDates={markedDates}
+            onDayPress={onDayPress}
         />
     )
+}
+
+export{
+    Calendar,
+    MakedDateProps,
+    DayProps,
+    generateInterval,
 }
