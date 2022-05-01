@@ -6,6 +6,7 @@ import { Scheduling } from '../sreens/Scheduling';
 import { SchedulingComplete } from '../sreens/SchedulingComplete';
 import { SchedulingDetails } from '../sreens/SchedulingDetails';
 import { createStackNavigator } from '@react-navigation/stack';
+import { MyCars } from '../sreens/MyCars';
 
 const {Navigator, Screen} = createStackNavigator();
 
@@ -31,6 +32,10 @@ export function StackRoute(){
             <Screen 
                 name='SchedulingDetails'
                 component={SchedulingDetails}
+            />
+            <Screen 
+                name='MyCars'
+                component={MyCars}
             />
         </Navigator>
         // <Stack.Navigator screenOptions={{headerShown: false}}>

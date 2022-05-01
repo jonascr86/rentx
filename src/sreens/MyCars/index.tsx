@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import {Alert, StatusBar} from 'react-native'
+import {Alert, FlatList, StatusBar} from 'react-native'
 import {Ionicons} from '@expo/vector-icons';
 import {
     Container,
     Header,
-    TotalCars,
-    HeaderContent,
-    CarList,
-    MyCarsButton,
+    SubTitle,
+    Title,
+    Content,
+    Appointments,
+    AppointmentsTitle,
+    AppointmentsQuantity,
 } from './styles'
 
 import Logo from '../../assets/logo.svg'
@@ -18,11 +20,19 @@ import api from '../../services/api';
 import { CarDTO } from '../../dtos/CarDTO'
 import { Loading } from '../../components/Loading'
 import { useTheme } from 'styled-components';
+import { BackButton } from '../../components/BackButton';
 
-export function Home(){
+interface CarProps{
+    id: string;
+    user_id: string;
+    car: CarDTO;
+}
+
+export function MyCars(){
     const theme = useTheme()
-    const [cars, setCars] = useState<CarDTO[]>([]);
+    const [cars, setCars] = useState<CarProps[]>([]);
     const [loading, setLoading] = useState(true);
+    const userId = 1
     
     const navigation = useNavigation();
     function handlerShowCarDetail(car: CarDTO){
@@ -30,14 +40,19 @@ export function Home(){
     }
 
     function handleOpenMyCars(){
-        navigation.navigate({name: 'MyCars'});
+        navigation.navigate('MyCars');
+    }
+
+    function handlerGoBack(){
+        navigation.goBack();
     }
 
     useEffect(() => {
         async function fetchCars(){
             try {
-                const response = await api.get('/cars');
+                const response = await api.get(`/schedules_byuser?user_id=${userId}`);
                 setCars(response.data);
+                console.log(response.data)
             } catch (error) {
                 console.log(error)
             }finally{
@@ -56,35 +71,38 @@ export function Home(){
                 translucent
             />
             <Header>
-                <HeaderContent>
-                    <Logo 
-                        width={RFValue(108)}
-                        height={RFValue(12)}
-                    />
-                    <TotalCars>
-                        Total de 12 carros.
-                    </TotalCars>
-                </HeaderContent>
+                <BackButton 
+                    onPress={handlerGoBack}
+                    color={theme.colors.shape}
+                />
+                <Title>
+                    Escolha uma {'\n'}
+                    data de início e {'\n'}
+                    fim do aluguel
+                </Title>
+                <SubTitle>
+                    Conforto segurança e praticidade
+                </SubTitle>
             </Header>
+            <Content>
+                <Appointments>
+                    <AppointmentsTitle>Agendamentos Feitos</AppointmentsTitle>
+                    <AppointmentsQuantity>05</AppointmentsQuantity>
+                </Appointments>
+            </Content>
             {loading ? <Loading /> :
-                <CarList 
+                <FlatList 
                     data={cars}
                     keyExtractor={(item) => item.id}
+                    showsHorizontalScrollIndicator={false}
+                    style={{paddingRight: 50, padding: 24}}
                     renderItem={({item}) => 
                     <Car 
-                        data={item}
-                        onPress={() => handlerShowCarDetail(item)}
+                        data={item.car}
+                        onPress={() => handlerShowCarDetail(item.car)}
                     />}
                 />
             }
-            <MyCarsButton>
-                <Ionicons 
-                    name='ios-car-sport'
-                    size={32}
-                    color={theme.colors.shape}
-                    onPress={handleOpenMyCars}
-                />
-            </MyCarsButton>
         </Container>
     )
 }
