@@ -27,27 +27,45 @@ import {
         RentaPriceQuota,
         RentalPriceTotal,
     } from "./styles";  
-import { StatusBar } from "react-native"; 
+import { Alert, StatusBar } from "react-native"; 
 import { ImageSlider } from "../../components/ImageSlider";
 import { Accessory } from "../../components/Accessory";
 
-import SpeedSvg from '../../assets/speed.svg'
-import AccelerationSvg from '../../assets/acceleration.svg'
-import ForceSvg from '../../assets/force.svg'
-import GasolineSvg from '../../assets/gasoline.svg'
-import ExchangeSvg from '../../assets/exchange.svg'
-import PeopleSvg from '../../assets/people.svg'
 import { Button } from "../../components/Button";
 import { RFValue } from "react-native-responsive-fontsize";
 import { useTheme } from "styled-components";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { CarDTO } from "../../dtos/CarDTO";
+import { getAccessoryIcon } from "../../utils/getAccessoryIcon";
+import {format} from 'date-fns'
+import api from "../../services/api";
+
+interface Props{
+    car: CarDTO
+    dates: string[];
+}
 
 export function SchedulingDetails(){
     const theme = useTheme();
     const navigation = useNavigation();
+    const route = useRoute();
+    const { car, dates } = route.params as Props;
 
-    function handlerShowSchedulingComplete(){
-        navigation.navigate('SchedulingComplete');
+    async function handlerShowSchedulingComplete(){
+        const scheduleByCar = await api.get(`/schedules_bycars/${car.id}`);
+
+        const unavailable_dates = [
+            ...scheduleByCar.data.unavailable_dates,
+            ...dates,
+        ] 
+
+        api.put(`/schedules_bycars/${car.id}`, {
+            id: car.id,
+            unavailable_dates
+        })
+        .then(response => navigation.navigate('SchedulingComplete'))
+        .catch(() => Alert.alert("Não foi possivel confirmar o agendamento!"))
+        
     }
 
     function handlerGoBack(){
@@ -65,28 +83,31 @@ export function SchedulingDetails(){
             </Header>
             <CarImages>
                 <ImageSlider 
-                    imageUrl={['https://w7.pngwing.com/pngs/853/38/png-transparent-2017-audi-r8-car-audi-rs5-audi-r8-lms-2016-audi-sedan-car-performance-car.png']}
+                    imageUrl={car.photos}
                 />
             </CarImages>
             <Content>
                 <Details>
                     <Description>
-                        <Brand>Lamborguini</Brand>
-                        <Name>Uracan</Name>
+                        <Brand>{car.brand}</Brand>
+                        <Name>{car.name}</Name>
                     </Description>
 
                     <Rent>
-                        <Period>Ao dia</Period>
-                        <Price>R$ 580</Price>
+                        <Period>{car.rent.period}</Period>
+                        <Price>R$ {car.rent.price}</Price>
                     </Rent>
                 </Details>
                 <Accessories>
-                    <Accessory name="380Km/h" icon={SpeedSvg}/>
-                    <Accessory name="3.2s" icon={AccelerationSvg}/>
-                    <Accessory name="800 HP" icon={ForceSvg}/>
-                    <Accessory name="Gasolina" icon={GasolineSvg}/>
-                    <Accessory name="Auto" icon={ExchangeSvg}/>
-                    <Accessory name="2 pessoas" icon={PeopleSvg}/>
+                    {
+                        car.accessories.map(accessory => (
+                            <Accessory 
+                                key={accessory.type}
+                                name={accessory.name} 
+                                icon={getAccessoryIcon(accessory.type)}
+                            />
+                        ))
+                    }
                 </Accessories>
                 <RentalPeriod>
                     <CalendarIcon>
@@ -98,7 +119,7 @@ export function SchedulingDetails(){
                     </CalendarIcon>
                     <DateInfo>
                         <DateTitle>DE</DateTitle>
-                        <DateValue>25/04/2022</DateValue>
+                        <DateValue>{format(new Date(dates[0]), 'dd/MM/yyyy')}</DateValue>
                     </DateInfo>
 
                     <Feather 
@@ -109,15 +130,15 @@ export function SchedulingDetails(){
 
                     <DateInfo>
                         <DateTitle>ATÉ</DateTitle>
-                        <DateValue>25/04/2022</DateValue>
+                        <DateValue>{format(new Date(dates[dates.length - 1]), 'dd/MM/yyyy')}</DateValue>
                     </DateInfo>
                 </RentalPeriod>
                 
                 <RentalPrice>
                     <RentalPriceLabel>TOTAL</RentalPriceLabel>
                     <RentalPriceDetails>
-                        <RentaPriceQuota>R$ 580 x3 diárias</RentaPriceQuota>
-                        <RentalPriceTotal>R$ 2.900</RentalPriceTotal>
+                        <RentaPriceQuota>R$ {car.rent.price} x{dates.length} diárias</RentaPriceQuota>
+                        <RentalPriceTotal>R$ {parseInt(car.rent.price) * parseInt(dates.length)}</RentalPriceTotal>
                     </RentalPriceDetails>
                 </RentalPrice>
             </Content>

@@ -34,9 +34,9 @@ export function CarDetails(){
     const navigation = useNavigation();
     const route = useRoute();
     const { car } = route.params as Props;
-
+    
     function handlerShowScheduling(){
-        navigation.navigate('Scheduling');
+        navigation.navigate({name: 'Scheduling', params: {car}});
     }
 
     function handlerGoBack(){
