@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {Alert, FlatList, StatusBar} from 'react-native'
 import {Ionicons} from '@expo/vector-icons';
+import {AntDesign} from '@expo/vector-icons';
 import {
     Container,
     Header,
@@ -10,6 +11,11 @@ import {
     Appointments,
     AppointmentsTitle,
     AppointmentsQuantity,
+    CarWrapper,
+    CarFutter,
+    CarFutterTitle,
+    CarFutterPeriod,
+    CarFutterDate,
 } from './styles'
 
 import Logo from '../../assets/logo.svg'
@@ -26,6 +32,8 @@ interface CarProps{
     id: string;
     user_id: string;
     car: CarDTO;
+    startDate: string;
+    endDate: string;
 }
 
 export function MyCars(){
@@ -87,7 +95,7 @@ export function MyCars(){
             <Content>
                 <Appointments>
                     <AppointmentsTitle>Agendamentos Feitos</AppointmentsTitle>
-                    <AppointmentsQuantity>05</AppointmentsQuantity>
+                    <AppointmentsQuantity>{cars.length}</AppointmentsQuantity>
                 </Appointments>
             </Content>
             {loading ? <Loading /> :
@@ -95,12 +103,28 @@ export function MyCars(){
                     data={cars}
                     keyExtractor={(item) => item.id}
                     showsHorizontalScrollIndicator={false}
-                    style={{paddingRight: 50, padding: 24}}
-                    renderItem={({item}) => 
-                    <Car 
-                        data={item.car}
-                        onPress={() => handlerShowCarDetail(item.car)}
-                    />}
+                    style={{paddingRight: 90, padding: 24}}
+                    renderItem={({item}) =>
+                    <CarWrapper> 
+                        <Car 
+                            data={item.car}
+                            onPress={() => handlerShowCarDetail(item.car)}
+                        />
+                        <CarFutter>
+                            <CarFutterTitle>Período</CarFutterTitle>
+                            <CarFutterPeriod>
+                                <CarFutterDate>{item.startDate}</CarFutterDate>
+                                <AntDesign 
+                                    name='arrowright'
+                                    size={20}
+                                    color={theme.colors.title}
+                                    style={{marginHorizontal: 10}}
+                                />
+                                <CarFutterDate>{item.endDate}</CarFutterDate>
+                            </CarFutterPeriod>
+                        </CarFutter>
+                    </CarWrapper>
+                    }
                 />
             }
         </Container>
