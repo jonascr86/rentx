@@ -1,5 +1,4 @@
 import React from 'react';
-// import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Home } from '../sreens/Home';
 import { CarDetails } from '../sreens/CarDetails';
 import { Scheduling } from '../sreens/Scheduling';
@@ -38,27 +37,5 @@ export function StackRoute(){
                 component={MyCars}
             />
         </Navigator>
-        // <Stack.Navigator screenOptions={{headerShown: false}}>
-        //     <Stack.Screen 
-        //         name='Home'
-        //         component={Home}
-        //     />
-        //     <Stack.Screen 
-        //         name='CarDetails'
-        //         component={CarDetails}
-        //     />
-        //     <Stack.Screen 
-        //         name='Scheduling'
-        //         component={Scheduling}
-        //     />
-        //     <Stack.Screen 
-        //         name='SchedulingComplete'
-        //         component={SchedulingComplete}
-        //     />
-        //     <Stack.Screen 
-        //         name='SchedulingDetails'
-        //         component={SchedulingDetails}
-        //     />
-        // </Stack.Navigator>
     )    
 }

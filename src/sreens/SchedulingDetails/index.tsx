@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BackButton } from "../../components/BackButton";
 import { Feather } from '@expo/vector-icons';
 
@@ -50,8 +50,10 @@ export function SchedulingDetails(){
     const navigation = useNavigation();
     const route = useRoute();
     const { car, dates } = route.params as Props;
+    const [loading, setLoading] = useState(false);
 
     async function handlerShowSchedulingComplete(){
+        setLoading(true)
         const scheduleByCar = await api.get(`/schedules_bycars/${car.id}`);
 
         const unavailable_dates = [
@@ -70,9 +72,8 @@ export function SchedulingDetails(){
             id: car.id,
             unavailable_dates
         })
-        .then(response => navigation.navigate('SchedulingComplete'))
+        .then(response => navigation.navigate({key: 'SchedulingComplete'}))
         .catch(() => Alert.alert("Não foi possivel confirmar o agendamento!"))
-        
     }
 
     function handlerGoBack(){
@@ -145,7 +146,7 @@ export function SchedulingDetails(){
                     <RentalPriceLabel>TOTAL</RentalPriceLabel>
                     <RentalPriceDetails>
                         <RentaPriceQuota>R$ {car.rent.price} x{dates.length} diárias</RentaPriceQuota>
-                        <RentalPriceTotal>R$ {parseInt(car.rent.price) * parseInt(dates.length)}</RentalPriceTotal>
+                        <RentalPriceTotal>R$ {car.rent.price * dates.length}</RentalPriceTotal>
                     </RentalPriceDetails>
                 </RentalPrice>
             </Content>
@@ -154,6 +155,7 @@ export function SchedulingDetails(){
                     title={"Alugar agora"} 
                     color={theme.colors.success}
                     onPress={handlerShowSchedulingComplete}
+                    loading={loading}
                 />
             </Footer>
         </Container>

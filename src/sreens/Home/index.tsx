@@ -26,11 +26,11 @@ export function Home(){
     
     const navigation = useNavigation();
     function handlerShowCarDetail(car: CarDTO){
-        navigation.navigate({name: 'CarDetails', params: {car}});
+        navigation.navigate('CarDetails', { car });
     }
 
     function handleOpenMyCars(){
-        navigation.navigate({name: 'MyCars'});
+        navigation.navigate('MyCars');
     }
 
     useEffect(() => {
