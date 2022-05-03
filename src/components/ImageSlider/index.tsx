@@ -1,5 +1,5 @@
-import React from "react";
-import { FlatList } from "react-native-gesture-handler";
+import React, { useRef, useState } from "react";
+import { FlatList, ViewToken } from "react-native";
 import {
     Container, 
     CarImage,
@@ -13,13 +13,29 @@ interface Props{
     imageUrl: string[];
 }
 
+interface ItemViwableprops{
+    viewableItems: ViewToken[];
+    changed: ViewToken[];
+}
+
 export function ImageSlider({imageUrl}: Props){
+
+    const [indexImage, setImageIndex] = useState(0);
+
+    const indexChanged = useRef((info: ItemViwableprops) => {
+        const index = info.viewableItems[0].index;
+        setImageIndex(index);
+    })
+    
     return(
         <Container>
             <ImageIndexs>
                 {
                     imageUrl.map((_, index) => (
-                        <ImageIndex active={true} key={String(index)}/>
+                        <ImageIndex 
+                            active={index === indexImage} 
+                            key={String(index)}
+                        />
                     ))
                 }
             </ImageIndexs>
@@ -36,6 +52,7 @@ export function ImageSlider({imageUrl}: Props){
                     )}
                     horizontal
                     showsHorizontalScrollIndicator={false}
+                    onViewableItemsChanged={indexChanged.current}
                 />
         </Container>
     )
