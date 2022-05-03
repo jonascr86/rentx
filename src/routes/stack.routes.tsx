@@ -6,12 +6,17 @@ import { SchedulingComplete } from '../sreens/SchedulingComplete';
 import { SchedulingDetails } from '../sreens/SchedulingDetails';
 import { createStackNavigator } from '@react-navigation/stack';
 import { MyCars } from '../sreens/MyCars';
+import { Spalsh } from '../sreens/Splash';
 
 const {Navigator, Screen} = createStackNavigator();
 
 export function StackRoute(){
     return(
-        <Navigator screenOptions={{headerShown: false}}>
+        <Navigator screenOptions={{headerShown: false}} initialRouteName="Splash" >
+            <Screen 
+                name='Splash'
+                component={Spalsh}
+            />
             <Screen 
                 name='Home'
                 component={Home}
