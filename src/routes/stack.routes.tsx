@@ -20,6 +20,10 @@ export function StackRoute(){
             <Screen 
                 name='Home'
                 component={Home}
+                options={{
+                    //desabilitando gestos
+                    gestureEnabled: false,
+                }}
             />
             <Screen 
                 name='CarDetails'

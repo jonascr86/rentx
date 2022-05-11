@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Alert, StatusBar, StyleSheet} from 'react-native'
+import {Alert, StatusBar, StyleSheet, BackHandler} from 'react-native'
 import {Ionicons} from '@expo/vector-icons';
 import Animated, {withSpring, useAnimatedStyle, useSharedValue, useAnimatedGestureHandler} from 'react-native-reanimated';
 import { RectButton, PanGestureHandler } from 'react-native-gesture-handler';
@@ -74,12 +74,15 @@ export function Home(){
                 console.log(error)
             }finally{
                 setLoading(false)
-            }
+            } 
         }
-        positionX.value = 0;
-        positionY.value = 0;
         fetchCars()
+    }, [])
 
+    useEffect(() => {
+        BackHandler.addEventListener('hardwareBackPress', () => {
+            return true
+        })
     }, [])
     return(
         <Container>
@@ -94,9 +97,12 @@ export function Home(){
                         width={RFValue(108)}
                         height={RFValue(12)}
                     />
-                    <TotalCars>
-                        Total de 12 carros.
-                    </TotalCars>
+                    {
+                        !loading &&
+                        <TotalCars>
+                            Total de {cars.length} carros.
+                        </TotalCars>
+                    }
                 </HeaderContent>
             </Header>
             {loading ? <Loading /> :
