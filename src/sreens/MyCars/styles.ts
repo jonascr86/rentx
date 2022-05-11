@@ -77,7 +77,7 @@ export const CarWrapper = styled.View`
 export const CarFutter = styled.View`
     width: 100%;
     padding: 12px;
-    /* padding-right: 100px; */
+    padding-right: 50px;
 
     margin-top: -10px;
 
